@@ -20,6 +20,11 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// Basic Root Route
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to Rajseba Invoices API' });
+});
+
 // Basic Health Check Route
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Invoice API is running smoothly' });
@@ -42,13 +47,17 @@ app.use((err, req, res, next) => {
 // Port
 const PORT = process.env.PORT || 5001;
 
-const server = app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  const server = app.listen(PORT, () => {
+    console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  });
 
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err, promise) => {
-  console.error(`Unhandled Rejection Error: ${err.message}`);
-  // Close server & exit process
-  server.close(() => process.exit(1));
-});
+  // Handle unhandled promise rejections
+  process.on('unhandledRejection', (err, promise) => {
+    console.error(`Unhandled Rejection Error: ${err.message}`);
+    // Close server & exit process
+    server.close(() => process.exit(1));
+  });
+}
+
+module.exports = app;
