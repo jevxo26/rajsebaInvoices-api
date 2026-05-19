@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const dbPath = path.join(__dirname, '../data/db.json');
+const isVercel = process.env.VERCEL || process.env.NODE_ENV === 'production';
+const dbPath = isVercel ? '/tmp/db.json' : path.join(__dirname, '../data/db.json');
 
 // Ensure database directory and file exist
 const ensureDb = () => {
