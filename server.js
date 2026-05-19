@@ -7,11 +7,7 @@ const connectDB = require('./config/db');
 // Load environment variables
 dotenv.config();
 
-// Fix for Vercel/Production: If no MONGO_URI is provided, fallback to JSON DB immediately
-// so that models are loaded correctly without timing out on Mongoose.
-if ((process.env.VERCEL || process.env.NODE_ENV === 'production') && !process.env.MONGO_URI) {
-  process.env.USE_JSON_DB = 'true';
-}
+
 
 // Connect to Database
 connectDB();
@@ -22,9 +18,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
 
 // Basic Root Route
 app.get('/', (req, res) => {
