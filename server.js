@@ -53,8 +53,7 @@ const server = app.listen(PORT, '0.0.0.0', () => {
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
   console.error(`Unhandled Rejection Error: ${err.message}`);
-  // Close server & exit process
-  server.close(() => process.exit(1));
+  // We do not exit the process here to prevent crashes from background tasks like Mongoose index builds
 });
 
 module.exports = app;
